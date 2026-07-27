@@ -213,7 +213,10 @@ NEW-DYNAREC? forces the new dynamic recompiler even on x86_64."
                                              '("16" "20" "24" "32" "40" "48" "64" "72" "128" "256"))
                                             #t))))))
      (native-inputs
-      (list pkg-config extra-cmake-modules qttools))
+      (list extra-cmake-modules
+			pkg-config
+			qttools
+			vulkan-headers))
      (inputs
       (list
             fluidsynth
@@ -236,8 +239,6 @@ NEW-DYNAREC? forces the new dynamic recompiler even on x86_64."
             rtmidi
             sdl2
             vde2
-            vulkan-headers
-            vulkan-loader
             wayland
             zlib
             `(,zstd "lib")))
