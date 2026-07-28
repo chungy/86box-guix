@@ -81,7 +81,7 @@ of them.")
    (license (license:non-copyleft "https://github.com/86Box/roms"))))
 
 (define-public 86box-roms-git
-  (let ((commit "9058256b6abda57d8f15553c33ac2afd180719ba")
+  (let ((commit "ba975209680f46c7966367aca76087372ba65356")
         (revision "0"))
     (package
      (inherit 86box-roms)
@@ -95,7 +95,7 @@ of them.")
              (commit commit)))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "0mfsv7va4v4j9jgzw641ngbww96i6dc35mfvnwavr99v6zsp71h5")))))))
+        (base32 "0i10hp5vbww118q8y2ia3i95n5ynclfhsy8gmbb78gxz9jb8vcjy")))))))
 
 (define-public 86box-assets
   (package
@@ -267,12 +267,12 @@ strongly recommended so that 86Box can function properly.")
   (make-86box #:new-dynarec? #t))
 
 (define-public 86box-git
-  (make-86box #:commit "764e323761f25d7332ffdf088327b92ce964b408"
+  (make-86box #:commit "53e9e4d2ca84a436d1b6007e6ad5977d882519e2"
               #:revision "0"
-              #:source-hash "13cw0nh110pvjdgih1x94pxsg1zx6sr4a5f4pm27p50ais2cngmk"))
+              #:source-hash "1sf8jc6myslq1mpfsq7cmn332cnpa66zzy99abdip5j764yzjbl0"))
 
 (define-public 86box-git-ndr
-  (make-86box #:commit "764e323761f25d7332ffdf088327b92ce964b408"
+  (make-86box #:commit "53e9e4d2ca84a436d1b6007e6ad5977d882519e2"
               #:revision "0"
               #:new-dynarec? #t
-              #:source-hash "13cw0nh110pvjdgih1x94pxsg1zx6sr4a5f4pm27p50ais2cngmk"))
+              #:source-hash "1sf8jc6myslq1mpfsq7cmn332cnpa66zzy99abdip5j764yzjbl0"))
