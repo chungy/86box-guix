@@ -222,17 +222,31 @@ NEW-DYNAREC? forces the new dynamic recompiler even on x86_64."
                                                   (string-append dir "/net.86box.86Box.png"))))
                                              '("16" "20" "24" "32" "40" "48" "64" "72" "128" "256"))
                                             #t)))
-                      #$@(if wrap-aaru?
-                             #~((add-after 'install 'wrap-86box
-                                           (lambda* (#:key inputs outputs #:allow-other-keys)
-                                                    (let* ((out    (assoc-ref outputs "out"))
-                                                           (libdir (string-append
-                                                                    (assoc-ref inputs "libaaruformat")
-                                                                    "/lib")))
-                                                      (wrap-program (string-append out "/bin/86Box")
-                                                                    `("LD_LIBRARY_PATH" ":" prefix (,libdir)))
-                                                      #t))))
-                             #~()))))
+                      (add-after 'install 'wrap-86box
+                                 (lambda* (#:key inputs outputs #:allow-other-keys)
+                                          (define (lib-dir name)
+                                            (string-append (assoc-ref inputs name) "/lib"))
+                                          (let* ((out (assoc-ref outputs "out"))
+                                                 (common-paths
+                                                  (filter identity
+                                                          (list (and (assoc-ref inputs "vde2")
+                                                                     (lib-dir "vde2"))
+                                                                (and (assoc-ref inputs "libpcap")
+                                                                     (lib-dir "libpcap"))
+                                                                (and (assoc-ref inputs "gamemode")
+                                                                     (lib-dir "gamemode")))))
+                                                 (aaru-path
+                                                  (and #$(if wrap-aaru? #t #f)
+                                                       (assoc-ref inputs "libaaruformat")
+                                                       (lib-dir "libaaruformat")))
+                                                 (all-paths
+                                                  (if aaru-path
+                                                      (cons aaru-path common-paths)
+                                                      common-paths)))
+                                            (when (pair? all-paths)
+                                              (wrap-program (string-append out "/bin/86Box")
+                                                            `("LD_LIBRARY_PATH" ":" prefix ,all-paths)))
+                                            #t))))))
    (native-inputs
     (list extra-cmake-modules
           pkg-config
