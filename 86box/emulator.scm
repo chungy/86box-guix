@@ -4,6 +4,7 @@
 ;;; assets sets.
 
 (define-module (86box emulator)
+  #:use-module (86box libraries)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix packages)
   #:use-module (guix git-download)
@@ -272,11 +273,11 @@ strongly recommended so that 86Box can function properly.")
   (make-86box #:commit "76e5b04e656caff879ca3e5a6926564c95899e7f"
               #:revision "0"
               #:source-hash "11wwlm1k66ikqryf5br4rf4icmmbxhv955zdlf029115mlc13fsh"
-              #:extra-inputs (list `(,zstd "lib"))))
+              #:extra-inputs (list libaaruformat `(,zstd "lib"))))
 
 (define-public 86box-git-ndr
   (make-86box #:commit "76e5b04e656caff879ca3e5a6926564c95899e7f"
               #:revision "0"
               #:new-dynarec? #t
               #:source-hash "11wwlm1k66ikqryf5br4rf4icmmbxhv955zdlf029115mlc13fsh"
-              #:extra-inputs (list `(,zstd "lib"))))
+              #:extra-inputs (list libaaruformat `(,zstd "lib"))))
