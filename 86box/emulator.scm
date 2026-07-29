@@ -261,6 +261,10 @@ NEW-DYNAREC? forces the new dynamic recompiler even on x86_64."
           pkg-config
           qttools
           vulkan-headers))
+   (propagated-inputs
+    (if commit
+        (list 86box-assets-git 86box-roms-git)
+        (list 86box-assets 86box-roms)))
    (inputs
     (append
      (list
