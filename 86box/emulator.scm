@@ -21,6 +21,7 @@
   #:use-module (gnu packages electronics)
   #:use-module (gnu packages fontutils)
   #:use-module (gnu packages freedesktop)
+  #:use-module (gnu packages ghostscript)
   #:use-module (gnu packages gl)
   #:use-module (gnu packages image)
   #:use-module (gnu packages kde-frameworks)
@@ -240,7 +241,9 @@ NEW-DYNAREC? forces the new dynamic recompiler even on x86_64."
                                                                 (and (assoc-ref inputs "libpcap")
                                                                      (lib-dir "libpcap"))
                                                                 (and (assoc-ref inputs "gamemode")
-                                                                     (lib-dir "gamemode")))))
+                                                                     (lib-dir "gamemode"))
+                                                                (and (assoc-ref inputs "ghostscript")
+                                                                     (lib-dir "ghostscript")))))
                                                  (aaru-path
                                                   (and #$(if wrap-aaru? #t #f)
                                                        (assoc-ref inputs "libaaruformat")
@@ -264,6 +267,7 @@ NEW-DYNAREC? forces the new dynamic recompiler even on x86_64."
       fluidsynth
       freetype
       gamemode
+      ghostscript
       libevdev
       libpcap
       libpng
