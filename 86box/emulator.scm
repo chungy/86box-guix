@@ -151,7 +151,8 @@ directories (@file{$XDG_DATA_DIRS/86Box/assets}).")
                      (commit #f)
                      (revision "0")
                      (new-dynarec? #f)
-                     (source-hash #f))
+                     (source-hash #f)
+                     (extra-inputs '()))
   "Return an 86Box package.  When COMMIT is provided a -git package is built.
 NEW-DYNAREC? forces the new dynamic recompiler even on x86_64."
   (package
@@ -214,34 +215,35 @@ NEW-DYNAREC? forces the new dynamic recompiler even on x86_64."
                                             #t))))))
      (native-inputs
       (list extra-cmake-modules
-			pkg-config
-			qttools
-			vulkan-headers))
+            pkg-config
+            qttools
+            vulkan-headers))
      (inputs
-      (list
-            fluidsynth
-            freetype
-            gamemode
-            libevdev
-            libpcap
-            libpng
-            libserialport
-            libslirp
-            libsndfile
-            libx11
-            libxi
-            libxkbcommon
-            mt32emu
-            openal
-            qtbase
-            qttranslations
-            qtwayland
-            rtmidi
-            sdl2
-            vde2
-            wayland
-            zlib
-            `(,zstd "lib")))
+      (append
+       (list
+        fluidsynth
+        freetype
+        gamemode
+        libevdev
+        libpcap
+        libpng
+        libserialport
+        libslirp
+        libsndfile
+        libx11
+        libxi
+        libxkbcommon
+        mt32emu
+        openal
+        qtbase
+        qttranslations
+        qtwayland
+        rtmidi
+        sdl2
+        vde2
+        wayland
+        zlib)
+       extra-inputs))
      (home-page "https://86box.net/")
      (synopsis "Low level emulator of x86-based PCs.")
      (description
@@ -267,12 +269,14 @@ strongly recommended so that 86Box can function properly.")
   (make-86box #:new-dynarec? #t))
 
 (define-public 86box-git
-  (make-86box #:commit "7da585199730e801fe73fae3c42622cbae4ffea3"
+  (make-86box #:commit "76e5b04e656caff879ca3e5a6926564c95899e7f"
               #:revision "0"
-              #:source-hash "1kwycfilxdrqmzxlqm8yn11li8ala4m3m2qb2hb91gv08lf87rfl"))
+              #:source-hash "11wwlm1k66ikqryf5br4rf4icmmbxhv955zdlf029115mlc13fsh"
+              #:extra-inputs (list `(,zstd "lib"))))
 
 (define-public 86box-git-ndr
-  (make-86box #:commit "7da585199730e801fe73fae3c42622cbae4ffea3"
+  (make-86box #:commit "76e5b04e656caff879ca3e5a6926564c95899e7f"
               #:revision "0"
               #:new-dynarec? #t
-              #:source-hash "1kwycfilxdrqmzxlqm8yn11li8ala4m3m2qb2hb91gv08lf87rfl"))
+              #:source-hash "11wwlm1k66ikqryf5br4rf4icmmbxhv955zdlf029115mlc13fsh"
+              #:extra-inputs (list `(,zstd "lib"))))
