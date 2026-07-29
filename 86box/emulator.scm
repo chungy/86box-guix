@@ -37,6 +37,13 @@
   #:use-module (gnu packages vulkan)
   #:use-module (gnu packages xml))
 
+(define %86box-git-commit "76e5b04e656caff879ca3e5a6926564c95899e7f")
+(define %86box-git-hash   "11wwlm1k66ikqryf5br4rf4icmmbxhv955zdlf029115mlc13fsh")
+(define %86box-roms-git-commit "4b9c3e4fed74c106577e9343df677661b955c250")
+(define %86box-roms-git-hash   "12334pa9ij67vs66lmxhxd7gahrs2rx9svh9v3vjqa9kc2082vx3")
+(define %86box-assets-git-commit "f06840ba5cb7cd3d42f1faa7fe418871a3b3be52")
+(define %86box-assets-git-hash   "0q1vkr2pf7air5wqzasjkcz40hlj88rlafqr6wvs7662s9ajd3c7")
+
 (define (new-dynarec-flag)
   "Return the CMake flag that enables the new dynamic recompiler
 on aarch64 and disables it on other architectures (principally x86_64)."
@@ -82,7 +89,7 @@ of them.")
    (license (license:non-copyleft "https://github.com/86Box/roms"))))
 
 (define-public 86box-roms-git
-  (let ((commit "4b9c3e4fed74c106577e9343df677661b955c250")
+  (let ((commit %86box-roms-git-commit)
         (revision "0"))
     (package
      (inherit 86box-roms)
@@ -96,7 +103,7 @@ of them.")
              (commit commit)))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "12334pa9ij67vs66lmxhxd7gahrs2rx9svh9v3vjqa9kc2082vx3")))))))
+        (base32 %86box-roms-git-hash)))))))
 
 (define-public 86box-assets
   (package
@@ -131,7 +138,7 @@ directories (@file{$XDG_DATA_DIRS/86Box/assets}).")
    (license (license:non-copyleft "https://github.com/86Box/assets"))))
 
 (define-public 86box-assets-git
-  (let ((commit "f06840ba5cb7cd3d42f1faa7fe418871a3b3be52")
+  (let ((commit %86box-assets-git-commit)
         (revision "0"))
     (package
      (inherit 86box-assets)
@@ -145,7 +152,7 @@ directories (@file{$XDG_DATA_DIRS/86Box/assets}).")
              (commit commit)))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "0q1vkr2pf7air5wqzasjkcz40hlj88rlafqr6wvs7662s9ajd3c7")))))))
+        (base32 %86box-assets-git-hash)))))))
 
 (define* (make-86box #:key
                      (version "6.0")
@@ -153,7 +160,8 @@ directories (@file{$XDG_DATA_DIRS/86Box/assets}).")
                      (revision "0")
                      (new-dynarec? #f)
                      (source-hash #f)
-                     (extra-inputs '()))
+                     (extra-inputs '())
+                     (wrap-aaru? #f))
   "Return an 86Box package.  When COMMIT is provided a -git package is built.
 NEW-DYNAREC? forces the new dynamic recompiler even on x86_64."
   (package
@@ -213,42 +221,53 @@ NEW-DYNAREC? forces the new dynamic recompiler even on x86_64."
                                                   (string-append assets "/" size "x" size "/net.86box.86Box.png")
                                                   (string-append dir "/net.86box.86Box.png"))))
                                              '("16" "20" "24" "32" "40" "48" "64" "72" "128" "256"))
-                                            #t))))))
-     (native-inputs
-      (list extra-cmake-modules
-            pkg-config
-            qttools
-            vulkan-headers))
-     (inputs
-      (append
-       (list
-        fluidsynth
-        freetype
-        gamemode
-        libevdev
-        libpcap
-        libpng
-        libserialport
-        libslirp
-        libsndfile
-        libx11
-        libxi
-        libxkbcommon
-        mt32emu
-        openal
-        qtbase
-        qttranslations
-        qtwayland
-        rtmidi
-        sdl2
-        vde2
-        wayland
-        zlib)
-       extra-inputs))
-     (home-page "https://86box.net/")
-     (synopsis "Low level emulator of x86-based PCs.")
-     (description
-      "86Box is a low level emulator of the IBM PC and compatibles.
+                                            #t)))
+                      #$@(if wrap-aaru?
+                             #~((add-after 'install 'wrap-86box
+                                           (lambda* (#:key inputs outputs #:allow-other-keys)
+                                                    (let* ((out    (assoc-ref outputs "out"))
+                                                           (libdir (string-append
+                                                                    (assoc-ref inputs "libaaruformat")
+                                                                    "/lib")))
+                                                      (wrap-program (string-append out "/bin/86Box")
+                                                                    `("LD_LIBRARY_PATH" ":" prefix (,libdir)))
+                                                      #t))))
+                             #~()))))
+   (native-inputs
+    (list extra-cmake-modules
+          pkg-config
+          qttools
+          vulkan-headers))
+   (inputs
+    (append
+     (list
+      fluidsynth
+      freetype
+      gamemode
+      libevdev
+      libpcap
+      libpng
+      libserialport
+      libslirp
+      libsndfile
+      libx11
+      libxi
+      libxkbcommon
+      mt32emu
+      openal
+      qtbase
+      qttranslations
+      qtwayland
+      rtmidi
+      sdl2
+      vde2
+      wayland
+      zlib)
+     extra-inputs))
+   (home-page "https://86box.net/")
+   (synopsis "Low level emulator of x86-based PCs.")
+   (description
+    "86Box is a low level emulator of the IBM PC and compatibles.
 It predominantly focuses on hardware built and released in the 20th
 century, ranging from the original IBM PC model 5150, to Pentium
 II-era hardware.  This package is built with Qt 6 and almost all
@@ -260,8 +279,8 @@ proprietary and not available via Guix (nor NonGuix) channels.
 The companion packages @code{86box-assets} and @code{86box-roms} are
 intentionally not made as dependencies, but installing them is
 strongly recommended so that 86Box can function properly.")
-     (license license:gpl2+)
-     (supported-systems '("x86_64-linux" "aarch64-linux"))))
+   (license license:gpl2+)
+   (supported-systems '("x86_64-linux" "aarch64-linux"))))
 
 (define-public 86box
   (make-86box))
@@ -270,14 +289,16 @@ strongly recommended so that 86Box can function properly.")
   (make-86box #:new-dynarec? #t))
 
 (define-public 86box-git
-  (make-86box #:commit "76e5b04e656caff879ca3e5a6926564c95899e7f"
+  (make-86box #:commit %86box-git-commit
               #:revision "0"
-              #:source-hash "11wwlm1k66ikqryf5br4rf4icmmbxhv955zdlf029115mlc13fsh"
-              #:extra-inputs (list libaaruformat `(,zstd "lib"))))
+              #:source-hash %86box-git-hash
+              #:extra-inputs (list libaaruformat `(,zstd "lib"))
+              #:wrap-aaru? #t))
 
 (define-public 86box-git-ndr
-  (make-86box #:commit "76e5b04e656caff879ca3e5a6926564c95899e7f"
+  (make-86box #:commit %86box-git-commit
               #:revision "0"
               #:new-dynarec? #t
-              #:source-hash "11wwlm1k66ikqryf5br4rf4icmmbxhv955zdlf029115mlc13fsh"
-              #:extra-inputs (list libaaruformat `(,zstd "lib"))))
+              #:source-hash %86box-git-hash
+              #:extra-inputs (list libaaruformat `(,zstd "lib"))
+              #:wrap-aaru? #t))
