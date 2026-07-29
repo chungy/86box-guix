@@ -199,7 +199,13 @@ NEW-DYNAREC? forces the new dynamic recompiler even on x86_64."
              (string-append "-DHAS_VDE=" #$vde2 "/lib/libvdeplug.so")
              #$(if new-dynarec?
                    "-DNEW_DYNAREC=ON"
-                   (new-dynarec-flag)))
+                   (new-dynarec-flag))
+             #$(let* ((recompiler (if new-dynarec? "NDR" "ODR"))
+                      (hash-part  (if commit
+                                      (string-append " " (string-take commit 10))
+                                      ""))
+                      (build-str  (string-append recompiler hash-part)))
+                 (string-append "-DEMU_BUILD=" build-str)))
      #:phases
      #~(modify-phases %standard-phases
                       (add-after 'install 'install-desktop-and-icons
