@@ -1,0 +1,7 @@
+;; This file is best viewed as -*- Scheme -*-.
+
+(authorizations
+ (version 0)
+
+ (("6F31 4AF0 EB0B 4F00 129D  FF47 190A 647D 1A0D 738A"
+   (name "chungy"))))
