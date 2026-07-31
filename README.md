@@ -28,7 +28,7 @@ This channel can be installed by adding it to your
         (introduction
          (make-channel-introduction
           "4e8c1b4095f3fae1eecdc0fe83aca6575827335f"
-          (opengpg-fingerprint
+          (openpgp-fingerprint
            "6F31 4AF0 EB0B 4F00 129D  FF47 190A 647D 1A0D 738A"))))
        %default-channels)
 ```
