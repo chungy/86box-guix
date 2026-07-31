@@ -302,11 +302,7 @@ II-era hardware.  This package is built with Qt 6 and almost all
 optional features enabled.
 
 Discord Rich Presence is excluded because the required library is
-proprietary and not available via Guix (nor NonGuix) channels.
-
-The companion packages @code{86box-assets} and @code{86box-roms} are
-intentionally not made as dependencies, but installing them is
-strongly recommended so that 86Box can function properly.")
+proprietary and not available via Guix (nor NonGuix) channels.")
    (license license:gpl2+)
    (supported-systems '("x86_64-linux" "aarch64-linux"))))
 
