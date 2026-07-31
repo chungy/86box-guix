@@ -1,7 +1,7 @@
 # 86box-guix
 
 This is a
-[channel](https://www.gnu.org/software/guix/manual/en/html_node/Channels.html)
+[channel](https://guix.gnu.org/manual/1.5.0/en/html_node/Channels.html)
 for the [Guix](https://guix.gnu.org/) package manager, which might run
 as its own operating system or be installed on top of any pre-existing
 Linux distribution.
