@@ -9,12 +9,12 @@ Linux distribution.
 It provides the [86Box](https://86box.net/) emulator in four major
 packages available to install and run:
 
-| Package         | Description                                   |
-|-----------------|-----------------------------------------------|
-| `86box`         | Stable release (v6.0), old dynamic recompiler |
-| `86box-ndr`     | Stable release (v6.0), new dynamic recompiler |
-| `86box-git`     | Unstable Git revision, old dynamic recompiler |
-| `86box-git-ndr` | Unstable Git revision, new dynamic recompiler |
+| Package           | Description                                   |
+|-------------------|-----------------------------------------------|
+| `86box`[^odr]     | Stable release (v6.0), old dynamic recompiler |
+| `86box-ndr`       | Stable release (v6.0), new dynamic recompiler |
+| `86box-git`[^odr] | Unstable Git revision, old dynamic recompiler |
+| `86box-git-ndr`   | Unstable Git revision, new dynamic recompiler |
 
 ## Installation
 
@@ -35,3 +35,6 @@ This channel can be installed by adding it to your
 
 Following this, run `guix pull` and the packages described in the
 introduction should be available for installation.
+
+[^odr]: The old dynamic recompiler builds are only available on
+    `x86_64`.  `aarch64` always uses the new dynamic recompiler.
