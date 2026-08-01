@@ -160,9 +160,7 @@ directories (@file{$XDG_DATA_DIRS/86Box/assets}).")
                      (commit #f)
                      (revision "0")
                      (new-dynarec? #f)
-                     (source-hash #f)
-                     (extra-inputs '())
-                     (wrap-aaru? #f))
+                     (source-hash #f))
   "Return an 86Box package.  When COMMIT is provided a -git package is built.
 NEW-DYNAREC? forces the new dynamic recompiler even on x86_64."
   (package
@@ -234,27 +232,21 @@ NEW-DYNAREC? forces the new dynamic recompiler even on x86_64."
                                           (define (lib-dir name)
                                             (string-append (assoc-ref inputs name) "/lib"))
                                           (let* ((out (assoc-ref outputs "out"))
-                                                 (common-paths
+                                                 (paths
                                                   (filter identity
-                                                          (list (and (assoc-ref inputs "vde2")
-                                                                     (lib-dir "vde2"))
-                                                                (and (assoc-ref inputs "libpcap")
-                                                                     (lib-dir "libpcap"))
-                                                                (and (assoc-ref inputs "gamemode")
+                                                          (list (and (assoc-ref inputs "gamemode")
                                                                      (lib-dir "gamemode"))
                                                                 (and (assoc-ref inputs "ghostscript")
-                                                                     (lib-dir "ghostscript")))))
-                                                 (aaru-path
-                                                  (and #$(if wrap-aaru? #t #f)
-                                                       (assoc-ref inputs "libaaruformat")
-                                                       (lib-dir "libaaruformat")))
-                                                 (all-paths
-                                                  (if aaru-path
-                                                      (cons aaru-path common-paths)
-                                                      common-paths)))
-                                            (when (pair? all-paths)
+                                                                     (lib-dir "ghostscript"))
+                                                                (and (assoc-ref inputs "libpcap")
+                                                                     (lib-dir "libpcap"))
+                                                                (and (assoc-ref inputs "vde2")
+                                                                     (lib-dir "vde2"))
+                                                                (and (assoc-ref inputs "libaaruformat")
+                                                                     (lib-dir "libaaruformat"))))))
+                                            (when (pair? paths)
                                               (wrap-program (string-append out "/bin/86Box")
-                                                            `("LD_LIBRARY_PATH" ":" prefix ,all-paths)))
+                                                            `("LD_LIBRARY_PATH" ":" prefix ,paths)))
                                             #t))))))
    (native-inputs
     (list extra-cmake-modules
@@ -291,7 +283,11 @@ NEW-DYNAREC? forces the new dynamic recompiler even on x86_64."
       vde2
       wayland
       zlib)
-     extra-inputs))
+     (if commit
+         (list
+          libaaruformat
+          `(,zstd "lib"))
+         '())))
    (home-page "https://86box.net/")
    (synopsis "Low level emulator of x86-based PCs.")
    (description
@@ -315,14 +311,10 @@ proprietary and not available via Guix (nor NonGuix) channels.")
 (define-public 86box-git
   (make-86box #:commit %86box-git-commit
               #:revision "0"
-              #:source-hash %86box-git-hash
-              #:extra-inputs (list libaaruformat `(,zstd "lib"))
-              #:wrap-aaru? #t))
+              #:source-hash %86box-git-hash))
 
 (define-public 86box-git-ndr
   (make-86box #:commit %86box-git-commit
               #:revision "0"
               #:new-dynarec? #t
-              #:source-hash %86box-git-hash
-              #:extra-inputs (list libaaruformat `(,zstd "lib"))
-              #:wrap-aaru? #t))
+              #:source-hash %86box-git-hash))
