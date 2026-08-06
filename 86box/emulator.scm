@@ -279,7 +279,9 @@ NEW-DYNAREC? forces the new dynamic recompiler even on x86_64."
       qttranslations
       qtwayland
       rtmidi
-      sdl2
+      (if commit
+          sdl3
+          sdl2)
       vde2
       wayland
       zlib)
