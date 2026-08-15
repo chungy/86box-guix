@@ -1,5 +1,5 @@
 ;; This file is best viewed as -*- Scheme -*-.
 
 (channel
- (version 0)
- (url "https://github.com/chungy/86box-guix"))
+  (version 0)
+  (url "https://github.com/chungy/86box-guix"))
