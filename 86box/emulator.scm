@@ -38,10 +38,10 @@
   #:use-module (gnu packages vulkan)
   #:use-module (gnu packages xml))
 
-(define %86box-git-commit        "e8493e990117aad520db4ed37fc77b38afaa6908")
+(define %86box-git-commit        "f3a417f4cb26500a5fae5c1a0d947eee6fd982f6")
 (define %86box-roms-git-commit   "db28585f9676ece84c15980c549e2b7958d39385")
 (define %86box-assets-git-commit "f06840ba5cb7cd3d42f1faa7fe418871a3b3be52")
-(define %86box-git-hash          "0wwaqf42vrdbbspgmn9rnx1lpg3dindy46gv55v2lgzh99lp9x7b")
+(define %86box-git-hash          "12926mmlflpdrp5qdirnrzyivq7bml67y4p6xv0yw9r4p09pld1b")
 (define %86box-roms-git-hash     "1pxwavfhpkh8ym7jlcfkcnx2haq4sfqhhz64wbjc8683pk2yj1jc")
 (define %86box-assets-git-hash   "0q1vkr2pf7air5wqzasjkcz40hlj88rlafqr6wvs7662s9ajd3c7")
 
