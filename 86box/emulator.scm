@@ -199,12 +199,15 @@ NEW-DYNAREC? forces the new dynamic recompiler even on x86_64."
               #$(if new-dynarec?
                     "-DNEW_DYNAREC=ON"
                     (new-dynarec-flag))
-              #$(let* ((recompiler (if new-dynarec? "NDR" "ODR"))
-                       (hash-part  (if commit
-                                       (string-append " " (string-take commit 10))
-                                       ""))
-                       (build-str  (string-append recompiler hash-part)))
-                  (string-append "-DEMU_BUILD=" build-str)))
+              #$@(let* ((x86_64? (string-prefix? "x86_64" (or (%current-system) "")))
+                        (recompiler (and x86_64?
+                                         (if new-dynarec? "NDR" "ODR")))
+                        (hash-part (and commit (string-take commit 10)))
+                        (parts (filter identity (list recompiler hash-part))))
+                   (if (null? parts)
+                       '()
+                       (list (string-append "-DEMU_BUILD="
+                                            (string-join parts " "))))))
       #:phases
       #~(modify-phases %standard-phases
           (add-after 'install 'install-desktop-and-icons
