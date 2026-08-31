@@ -38,11 +38,11 @@
   #:use-module (gnu packages vulkan)
   #:use-module (gnu packages xml))
 
-(define %86box-git-commit        "46a3d8c7755d2019d354ba4188dcf16c651301b4")
-(define %86box-roms-git-commit   "e4509ae07092acee83c0919f0e879c55fa29c653")
+(define %86box-git-commit        "490ad161fbf5d8dea2171edc446378e26d9d129f")
+(define %86box-roms-git-commit   "6e8b831df2bb9d0177963ae095dcf775219495cb")
 (define %86box-assets-git-commit "f06840ba5cb7cd3d42f1faa7fe418871a3b3be52")
-(define %86box-git-hash          "00w76df4y7v4cadrhcimb3gl0i69hjpyh24z2bry51j0r0lhf8b6")
-(define %86box-roms-git-hash     "1fa1yxjn2d9i19vhcz5qgyv5xpk9945f9xaq34045vrzlhpsg85v")
+(define %86box-git-hash          "0m9i1jfvw68kknxzlrc84aj8p3x0121j5qdglp6ir5lkqf9jzy3j")
+(define %86box-roms-git-hash     "1xm20i85zfgshbz4fwx29h5yw6zjfwayw3p319wv5canr2a2a8ci")
 (define %86box-assets-git-hash   "0q1vkr2pf7air5wqzasjkcz40hlj88rlafqr6wvs7662s9ajd3c7")
 
 (define (new-dynarec-flag)
