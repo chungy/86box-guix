@@ -38,15 +38,15 @@
   #:use-module (gnu packages vulkan)
   #:use-module (gnu packages xml))
 
-(define %86box-git-date          "20260904164310")
+(define %86box-git-date          "20260904181157")
 (define %86box-roms-git-date     "20260903202946")
-(define %86box-assets-git-date   "20260704214153")
-(define %86box-git-commit        "874ddaa0e0e83ca865d3f2434d66554ee1cdd50a")
+(define %86box-assets-git-date   "20260904181348")
+(define %86box-git-commit        "80a5e4eec66cc91c75b080f13abf533dad9cb6d0")
 (define %86box-roms-git-commit   "818f32696811d88aebc24ea5e473106b02b89018")
-(define %86box-assets-git-commit "f06840ba5cb7cd3d42f1faa7fe418871a3b3be52")
-(define %86box-git-hash          "0pfmjfgavzijvv43f520284s6jaqp26qzv820vb8c031pnxpm0gc")
+(define %86box-assets-git-commit "6b23b7c03732049e5d979622b49b8d87061d3e32")
+(define %86box-git-hash          "0gvvc40s97xwrnb2wpvs8f4m42zbhlrz15d2qfzpjj0dpkfpbfjg")
 (define %86box-roms-git-hash     "05kv9y3chgsrm1wa8r1k5ziz8xpb25db6pr2fi7vp7k8p9r6mlwj")
-(define %86box-assets-git-hash   "0q1vkr2pf7air5wqzasjkcz40hlj88rlafqr6wvs7662s9ajd3c7")
+(define %86box-assets-git-hash   "01f1vl1vw8snpbqss6knc9kk4all1g93l86qzq7sh49rmaav8n31")
 
 (define (new-dynarec-flag)
   "Return the CMake flag that enables the new dynamic recompiler
