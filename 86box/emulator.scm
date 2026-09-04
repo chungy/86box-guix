@@ -38,6 +38,9 @@
   #:use-module (gnu packages vulkan)
   #:use-module (gnu packages xml))
 
+(define %86box-git-date          "20260903234833")
+(define %86box-roms-git-date     "20260903202946")
+(define %86box-assets-git-date   "20260704214153")
 (define %86box-git-commit        "f827c265427cf14ef755ae34e2cfc9c41af00817")
 (define %86box-roms-git-commit   "818f32696811d88aebc24ea5e473106b02b89018")
 (define %86box-assets-git-commit "f06840ba5cb7cd3d42f1faa7fe418871a3b3be52")
@@ -90,12 +93,11 @@ of them.")
     (license (license:non-copyleft "https://github.com/86Box/roms"))))
 
 (define-public 86box-roms-git
-  (let ((commit %86box-roms-git-commit)
-        (revision "0"))
+  (let ((commit %86box-roms-git-commit))
     (package
       (inherit 86box-roms)
       (name "86box-roms-git")
-      (version (git-version "6.0" revision commit))
+      (version (string-append "6.0-" %86box-roms-git-date))
       (source
        (origin
          (method git-fetch)
@@ -139,12 +141,11 @@ directories (@file{$XDG_DATA_DIRS/86Box/assets}).")
     (license (license:non-copyleft "https://github.com/86Box/assets"))))
 
 (define-public 86box-assets-git
-  (let ((commit %86box-assets-git-commit)
-        (revision "0"))
+  (let ((commit %86box-assets-git-commit))
     (package
       (inherit 86box-assets)
       (name "86box-assets-git")
-      (version (git-version "6.0" revision commit))
+      (version (string-append "6.0-" %86box-assets-git-date))
       (source
        (origin
          (method git-fetch)
@@ -158,7 +159,7 @@ directories (@file{$XDG_DATA_DIRS/86Box/assets}).")
 (define* (make-86box #:key
                      (version "6.0")
                      (commit #f)
-                     (revision "0")
+                     (date #f)
                      (new-dynarec? #f)
                      (source-hash #f))
   "Return an 86Box package.  When COMMIT is provided a -git package is built.
@@ -168,7 +169,7 @@ NEW-DYNAREC? forces the new dynamic recompiler even on x86_64."
                          (if commit "-git" "")
                          (if new-dynarec? "-ndr" "")))
     (version (if commit
-                 (git-version version revision commit)
+                 (string-append version "-" date)
                  version))
     (source
      (origin
@@ -315,11 +316,11 @@ proprietary and not available via Guix (nor NonGuix) channels.")
 
 (define-public 86box-git
   (make-86box #:commit %86box-git-commit
-              #:revision "0"
+              #:date %86box-git-date
               #:source-hash %86box-git-hash))
 
 (define-public 86box-git-ndr
   (make-86box #:commit %86box-git-commit
-              #:revision "0"
+              #:date %86box-git-date
               #:new-dynarec? #t
               #:source-hash %86box-git-hash))
