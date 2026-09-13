@@ -168,8 +168,7 @@ directories (@file{$XDG_DATA_DIRS/86Box/assets}).")
      (list
       #:tests? #f
       #:configure-flags
-      #~(list "-DRELEASE=ON"
-              "-DUSE_QT6=ON"
+      #~(list "-DUSE_QT6=ON"
               "-DOPENAL=ON"
               "-DFLUIDSYNTH=ON"
               "-DRTMIDI=ON"
