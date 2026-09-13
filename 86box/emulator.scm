@@ -48,13 +48,6 @@
 (define %86box-roms-git-hash     "0fydfsb9w842vdjvc31prrax49a56fhygajxqps3z54f0kv8zv0x")
 (define %86box-assets-git-hash   "01f1vl1vw8snpbqss6knc9kk4all1g93l86qzq7sh49rmaav8n31")
 
-(define (new-dynarec-flag)
-  "Return the CMake flag that enables the new dynamic recompiler
-on aarch64 and disables it on other architectures (principally x86_64)."
-  (if (string-prefix? "aarch64" (or (%current-system) ""))
-      "-DNEW_DYNAREC=ON"
-      "-DNEW_DYNAREC=OFF"))
-
 (define-public 86box-roms
   (package
     (name "86box-roms")
@@ -156,31 +149,20 @@ directories (@file{$XDG_DATA_DIRS/86Box/assets}).")
          (sha256
           (base32 %86box-assets-git-hash)))))))
 
-(define* (make-86box #:key
-                     (version "6.0")
-                     (commit #f)
-                     (date #f)
-                     (new-dynarec? #f)
-                     (source-hash #f))
-  "Return an 86Box package.  When COMMIT is provided a -git package is built.
-NEW-DYNAREC? forces the new dynamic recompiler even on x86_64."
+(define-public 86box
   (package
-    (name (string-append "86box"
-                         (if commit "-git" "")
-                         (if new-dynarec? "-ndr" "")))
-    (version (if commit
-                 (string-append version "-" date)
-                 version))
+    (name "86box")
+    (version "6.0")
     (source
      (origin
        (method git-fetch)
        (uri (git-reference
               (url "https://github.com/86Box/86Box")
-              (commit (or commit (string-append "v" version)))))
+              (commit (string-append "v" version))))
        (file-name (git-file-name name version))
        (sha256
-        (base32 (or source-hash
-                    "036s6jzsy3xnwbzq65d3a5y920sfpnq8xgj2idnql1p9nbzz4vj2")))))
+        (base32
+         "036s6jzsy3xnwbzq65d3a5y920sfpnq8xgj2idnql1p9nbzz4vj2"))))
     (build-system cmake-build-system)
     (arguments
      (list
@@ -193,22 +175,13 @@ NEW-DYNAREC? forces the new dynamic recompiler even on x86_64."
               "-DRTMIDI=ON"
               "-DMUNT=ON"
               "-DMUNT_EXTERNAL=ON"
-              "-DDISCORD=OFF"  ; disabled because a proprietary SDK is required
+              "-DDISCORD=OFF" ; Disabled because a proprietary SDK is required
               "-DPREFER_STATIC=OFF"
               "-DVNC=OFF"
               (string-append "-DHAS_VDE=" #$vde2 "/lib/libvdeplug.so")
-              #$(if new-dynarec?
-                    "-DNEW_DYNAREC=ON"
-                    (new-dynarec-flag))
-              #$@(let* ((x86_64? (string-prefix? "x86_64" (or (%current-system) "")))
-                        (recompiler (and x86_64?
-                                         (if new-dynarec? "NDR" "ODR")))
-                        (hash-part (and commit (string-take commit 10)))
-                        (parts (filter identity (list recompiler hash-part))))
-                   (if (null? parts)
-                       '()
-                       (list (string-append "-DEMU_BUILD="
-                                            (string-join parts " "))))))
+              #$@(if (target-x86-64?)
+                     '("-DEMU_BUILD=ODR")
+                     '()))
       #:phases
       #~(modify-phases %standard-phases
           (add-after 'install 'install-desktop-and-icons
@@ -221,7 +194,7 @@ NEW-DYNAREC? forces the new dynamic recompiler even on x86_64."
                      (assets (string-append source "/src/unix/assets")))
                 (mkdir-p apps)
                 (copy-file (string-append assets "/net.86box.86Box.desktop")
-                           (string-append apps "/net.86box.86Box.desktop"))
+                           (string-append apps   "/net.86box.86Box.desktop"))
                 (for-each
                  (lambda (size)
                    (let ((dir (string-append icons "/" size "x" size "/apps")))
@@ -245,9 +218,7 @@ NEW-DYNAREC? forces the new dynamic recompiler even on x86_64."
                                     (and (assoc-ref inputs "libpcap")
                                          (lib-dir "libpcap"))
                                     (and (assoc-ref inputs "vde2")
-                                         (lib-dir "vde2"))
-                                    (and (assoc-ref inputs "libaaruformat")
-                                         (lib-dir "libaaruformat"))))))
+                                         (lib-dir "vde2"))))))
                 (when (pair? paths)
                   (wrap-program (string-append out "/bin/86Box")
                     `("LD_LIBRARY_PATH" ":" prefix ,paths)))
@@ -258,69 +229,117 @@ NEW-DYNAREC? forces the new dynamic recompiler even on x86_64."
            qttools
            vulkan-headers))
     (propagated-inputs
-     (if commit
-         (list 86box-assets-git 86box-roms-git)
-         (list 86box-assets 86box-roms)))
+     (list 86box-assets
+           86box-roms))
     (inputs
-     (append
-      (list
-       fluidsynth
-       freetype
-       gamemode
-       ghostscript
-       libevdev
-       libpcap
-       libpng
-       libserialport
-       libslirp
-       libsndfile
-       libx11
-       libxi
-       libxkbcommon
-       mt32emu
-       openal
-       qtbase
-       qttranslations
-       qtwayland
-       rtmidi
-       (if commit
-           sdl3
-           sdl2)
-       vde2
-       wayland
-       zlib)
-      (if commit
-          (list
-           libaaruformat
-           `(,zstd "lib"))
-          '())))
+     (list fluidsynth
+           freetype
+           gamemode
+           ghostscript
+           libevdev
+           libpcap
+           libpng
+           libserialport
+           libslirp
+           libsndfile
+           libx11
+           libxi
+           libxkbcommon
+           mt32emu
+           openal
+           qtbase
+           qttranslations
+           qtwayland
+           rtmidi
+           sdl2
+           vde2
+           wayland
+           zlib))
     (home-page "https://86box.net/")
     (synopsis "Low level emulator of x86-based PCs.")
     (description
      "86Box is a low level emulator of the IBM PC and compatibles.
-It predominantly focuses on hardware built and released in the 20th
-century, ranging from the original IBM PC model 5150, to Pentium
-II-era hardware.  This package is built with Qt 6 and almost all
-optional features enabled.
-
-Discord Rich Presence is excluded because the required library is
-proprietary and not available via Guix (nor NonGuix) channels.")
+It predominantly focuses on hardware built and released in the 20th century,
+ranging from the original IBM PC model 5150, to Pentium II-era hardware.  This
+package is built with Qt 6 and almost all optional features enabled.")
     (license license:gpl2+)
     (supported-systems '("x86_64-linux" "aarch64-linux"))))
 
-(define-public 86box
-  (make-86box))
-
 (define-public 86box-ndr
-  (make-86box #:new-dynarec? #t))
+  (package
+    (inherit 86box)
+    (name "86box-ndr")
+    (arguments
+     (substitute-keyword-arguments (package-arguments 86box)
+       ((#:configure-flags flags #~'())
+        #~(cons "-DNEW_DYNAREC=ON"
+                (append
+                 (filter (lambda (f)
+                           (not (string-prefix? "-DEMU_BUILD=" f)))
+                         #$flags)
+                 '("-DEMU_BUILD=NDR"))))))
+    (supported-systems '("x86_64-linux"))))
 
 (define-public 86box-git
-  (make-86box #:commit %86box-git-commit
-              #:date %86box-git-date
-              #:source-hash %86box-git-hash))
+  (package
+    (inherit 86box)
+    (name "86box-git")
+    (version (string-append "6.0-" %86box-git-date))
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+              (url "https://github.com/86Box/86Box")
+              (commit %86box-git-commit)))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32
+         %86box-git-hash))))
+    (arguments
+     (substitute-keyword-arguments (package-arguments 86box)
+       ((#:configure-flags flags #~'())
+        #~(append
+           (filter (lambda (f)
+                     (not (string-prefix? "-DEMU_BUILD=" f)))
+                   #$flags)
+           (list #$(string-append "-DEMU_BUILD="
+                                  (if (target-x86-64?) "ODR " "")
+                                  (string-take %86box-git-commit 10)))))
+       ((#:phases phases #~%standard-phases)
+        #~(modify-phases #$phases
+            (add-after 'wrap-86box 'wrap-86box-extra
+              (lambda* (#:key inputs outputs #:allow-other-keys)
+                (let ((dir (assoc-ref inputs "libaaruformat")))
+                  (when dir
+                    (wrap-program (string-append (assoc-ref outputs "out")
+                                                 "/bin/86Box")
+                      `("LD_LIBRARY_PATH" ":" prefix
+                        (,(string-append dir "/lib"))))))))))))
+    (native-inputs
+     (modify-inputs (package-native-inputs 86box)
+       (delete "extra-cmake-modules")))
+    (propagated-inputs
+     (list 86box-assets-git
+           86box-roms-git))
+    (inputs
+     (modify-inputs (package-inputs 86box)
+       (delete "sdl2")
+       (append libaaruformat
+               sdl3
+               `(,zstd "lib"))))))
 
 (define-public 86box-git-ndr
-  (make-86box #:commit %86box-git-commit
-              #:date %86box-git-date
-              #:new-dynarec? #t
-              #:source-hash %86box-git-hash))
+  (package
+    (inherit 86box-git)
+    (name "86box-git-ndr")
+    (arguments
+     (substitute-keyword-arguments (package-arguments 86box-git)
+       ((#:configure-flags flags #~'())
+        #~(cons "-DNEW_DYNAREC=ON"
+                (append
+                 (filter (lambda (f)
+                           (not (string-prefix? "-DEMU_BUILD=" f)))
+                         #$flags)
+                 (list #$(string-append "-DEMU_BUILD=NDR "
+                                        (string-take %86box-git-commit 10))))))))
+    (supported-systems '("x86_64-linux"))))
