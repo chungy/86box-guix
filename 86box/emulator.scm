@@ -38,13 +38,13 @@
   #:use-module (gnu packages vulkan)
   #:use-module (gnu packages xml))
 
-(define %86box-git-date          "20260927232708")
+(define %86box-git-date          "20260928031229")
 (define %86box-roms-git-date     "20260927105244")
 (define %86box-assets-git-date   "20260904181348")
-(define %86box-git-commit        "ce9f5a24ce2a5f76a0b132ddb9493c4d07a84589")
+(define %86box-git-commit        "75efdb5ae58fa10db410150fc78ec366c8dda829")
 (define %86box-roms-git-commit   "c0bf87ceaa693523dc52edfb0be516df2142fe36")
 (define %86box-assets-git-commit "6b23b7c03732049e5d979622b49b8d87061d3e32")
-(define %86box-git-hash          "1qkkxd4v1r512qhp90nc89wp6diwzmr093yfn8y3727nckbl2ffy")
+(define %86box-git-hash          "0d16b2y21jqljhpa64x9n040knf3sf2yqkb98n909i2xrgbcd25f")
 (define %86box-roms-git-hash     "1vi7qni9mvgsl4pymwvnrifs74713bkjlb3ywdaxhr1wgskkady8")
 (define %86box-assets-git-hash   "01f1vl1vw8snpbqss6knc9kk4all1g93l86qzq7sh49rmaav8n31")
 
