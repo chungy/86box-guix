@@ -257,7 +257,7 @@ directories (@file{$XDG_DATA_DIRS/86Box/assets}).")
            wayland
            zlib))
     (home-page "https://86box.net/")
-    (synopsis "Low level emulator of x86-based PCs.")
+    (synopsis "Low level emulator of x86-based PCs")
     (description
      "86Box is a low level emulator of the IBM PC and compatibles.
 It predominantly focuses on hardware built and released in the 20th century,
