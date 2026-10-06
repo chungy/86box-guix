@@ -39,13 +39,13 @@
   #:use-module (gnu packages vulkan)
   #:use-module (gnu packages xml))
 
-(define %86box-git-date          "20261006044121")
+(define %86box-git-date          "20261006090717")
 (define %86box-roms-git-date     "20261005153336")
 (define %86box-assets-git-date   "20261003032658")
-(define %86box-git-commit        "6da34855c9a9111991daf4624f69607d66e29247")
+(define %86box-git-commit        "8b7cc386afc25180d69eda7c02f6b6217fb2d365")
 (define %86box-roms-git-commit   "3b28118fb1cfc70669127410463ca922a35968c1")
 (define %86box-assets-git-commit "82de0b6c1e070e606c5ca23ac3a33c2c486ece26")
-(define %86box-git-hash          "0wwm011y1mih79kadhgl1kl7a5928g9sqnjgvp3zrlxf7szd7vzk")
+(define %86box-git-hash          "09yrhm92vaycms11z0mj5pp3dvfkifrshwiswy22c2xkagr8hr25")
 (define %86box-roms-git-hash     "01i1a2ydm8xnaz0z935vj0w9vkr6drbyp73ih3dpl6v8db65ylj5")
 (define %86box-assets-git-hash   "02jwp4zdvvpnaydpjkc6zm5wn98106xk7sbrlx76ay96v0lwk7wi")
 
@@ -327,7 +327,8 @@ package is built with Qt 6 and almost all optional features enabled.")
        (delete "sdl2")
        (append libaaruformat
                sdl3
-               `(,zstd "lib"))))))
+               `(,zstd "lib"))))
+    (supported-systems '("x86_64-linux" "aarch64-linux" "loongarch64-linux"))))
 
 (define-public 86box-git-ndr
   (package
