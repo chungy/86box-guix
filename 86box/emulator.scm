@@ -16,6 +16,7 @@
   #:use-module (gnu packages)
   #:use-module (gnu packages admin)
   #:use-module (gnu packages audio)
+  #:use-module (gnu packages bash)
   #:use-module (gnu packages compression)
   #:use-module (gnu packages containers)
   #:use-module (gnu packages electronics)
@@ -231,7 +232,8 @@ directories (@file{$XDG_DATA_DIRS/86Box/assets}).")
      (list 86box-assets
            86box-roms))
     (inputs
-     (list fluidsynth
+     (list bash-minimal
+           fluidsynth
            freetype
            gamemode
            ghostscript
