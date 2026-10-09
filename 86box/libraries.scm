@@ -15,7 +15,7 @@
 (define-public libaaruformat
   (package
     (name "libaaruformat")
-    (version "1.0.0-beta.1")
+    (version "1.0.0-beta.2")
     (source
      (origin
        (method git-fetch)
@@ -25,7 +25,7 @@
               (recursive? #t)))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "0bkxja0qdrh92kzjb8yn51c8lyvgmaw5v42pfv102979qwm2p6nd"))))
+        (base32 "1b4bij8sqz7n5sj1icbgj87fpqvn25b3n5p0bxfc2xrx8afncazv"))))
     (build-system cmake-build-system)
     (arguments
      (list
