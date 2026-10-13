@@ -21,11 +21,11 @@
        (method git-fetch)
        (uri (git-reference
               (url "https://github.com/aaru-dps/libaaruformat")
-              (commit (string-append "v" version))
+              (commit "06a22a171d97bd45698145645bb66612e130f340") ;; Interim commit while the release tag references a non-existent submodule
               (recursive? #t)))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "1b4bij8sqz7n5sj1icbgj87fpqvn25b3n5p0bxfc2xrx8afncazv"))))
+        (base32 "020xyxr9lb03sdd1f0c9913zgjv72m4pz6dpbv8bszsmhm591rbb"))))
     (build-system cmake-build-system)
     (arguments
      (list
