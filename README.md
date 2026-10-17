@@ -9,20 +9,21 @@ Linux distribution.
 It provides the [86Box](https://86box.net/) emulator in four major
 packages available to install and run:
 
-| Package         | Description                                   |
-|-----------------|-----------------------------------------------|
-| `86box`         | Stable release (v6.0)                         |
-| `86box-ndr`     | Stable release (v6.0), new dynamic recompiler |
-| `86box-git`     | Unstable Git revision                         |
-| `86box-git-ndr` | Unstable Git revision, new dynamic recompiler |
+| Package     | Description                                   |
+|-------------|-----------------------------------------------|
+| `86box`     | Stable release (v6.0)                         |
+| `86box-ndr` | Stable release (v6.0), new dynamic recompiler |
+| `86box-git` | Unstable Git revision                         |
 
-On the `x86_64` architecture, the `86box` and `86box-git` packages use the old
-dynamic recompiler.  The `86box-ndr` and `86box-git-ndr` packages are
-available to use the new dynamic recompiler.  The old dynamic recompiler as
-default reflects the project’s own recommendations to users.
+On the `x86_64` architecture, the `86box` package uses the old dynamic
+recompiler.  The `86box-ndr` package is available to use the new dynamic
+recompiler.  The old dynamic recompiler as default reflects the project’s own
+recommendations to users.
 
 On the `aarch64-linux` architecture, only the `86box` and `86box-git` packages
-are available and they always use the new dynamic recompiler.
+are available and they always use the new dynamic recompiler.  The
+`loongarch64-linux` architecture is also available, presently only in the
+`86box-git` package.
 
 ## Installation
 

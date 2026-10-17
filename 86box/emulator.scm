@@ -304,7 +304,6 @@ package is built with Qt 6 and almost all optional features enabled.")
                      (not (string-prefix? "-DEMU_BUILD=" f)))
                    #$flags)
            (list #$(string-append "-DEMU_BUILD="
-                                  (if (target-x86-64?) "ODR " "")
                                   (string-take %86box-git-commit 10)))))
        ((#:phases phases #~%standard-phases)
         #~(modify-phases #$phases
@@ -329,19 +328,3 @@ package is built with Qt 6 and almost all optional features enabled.")
                sdl3
                `(,zstd "lib"))))
     (supported-systems '("x86_64-linux" "aarch64-linux" "loongarch64-linux"))))
-
-(define-public 86box-git-ndr
-  (package
-    (inherit 86box-git)
-    (name "86box-git-ndr")
-    (arguments
-     (substitute-keyword-arguments (package-arguments 86box-git)
-       ((#:configure-flags flags #~'())
-        #~(cons "-DNEW_DYNAREC=ON"
-                (append
-                 (filter (lambda (f)
-                           (not (string-prefix? "-DEMU_BUILD=" f)))
-                         #$flags)
-                 (list #$(string-append "-DEMU_BUILD=NDR "
-                                        (string-take %86box-git-commit 10))))))))
-    (supported-systems '("x86_64-linux"))))
