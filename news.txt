@@ -1,0 +1,12 @@
+;; This file is best viewed as -*- Scheme -*-.
+
+(channel-news
+ (version 0)
+ (entry (commit "45f9195032d845e3976612295cf6d559e01b981c")
+        (title (en "@code{86box-git-ndr} package removed"))
+        (body (en "In 86Box commit
+@code{f50f8cdf7e27414ad2fa79cb1d250226034a9357}, the old dynamic compiler was
+removed from the project, removing the use for the @code{86box-git-ndr}
+package.  As such the package has been removed from this Guix channel.  Please
+migrate to the @code{86box-git} package instead if you have been using
+@code{86box-git-ndr}."))))
