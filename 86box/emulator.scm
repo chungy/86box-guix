@@ -40,13 +40,13 @@
   #:use-module (gnu packages xml))
 
 (define %86box-git-date          "20261024214507")
-(define %86box-roms-git-date     "20261024135739")
+(define %86box-roms-git-date     "20261025031806")
 (define %86box-assets-git-date   "20261003032658")
 (define %86box-git-commit        "5a5e8c1ea8e0e5ba31854a0a4e45714603cc72c7")
-(define %86box-roms-git-commit   "e013dfedf8a47df15fe7f867f25a420dac98741d")
+(define %86box-roms-git-commit   "c8996a4ad3ef75dbc3522e9d0e1c8274e36dcf99")
 (define %86box-assets-git-commit "82de0b6c1e070e606c5ca23ac3a33c2c486ece26")
 (define %86box-git-hash          "1aw7jn1kfxlgymrrp81qa4mqwfa8ycxmfjcghav6sv8wfh928gcx")
-(define %86box-roms-git-hash     "12wb2gm6w81p5vn36qcn8ks8df3fkmi73fw0y06b5fnr80ywb02j")
+(define %86box-roms-git-hash     "06b9sx7wjsx5dsdb2r90yvmyaibcffs4jaka6hbhmmrxxpm3wxvw")
 (define %86box-assets-git-hash   "02jwp4zdvvpnaydpjkc6zm5wn98106xk7sbrlx76ay96v0lwk7wi")
 
 (define-public 86box-roms
