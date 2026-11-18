@@ -16,6 +16,7 @@
   #:use-module (gnu packages)
   #:use-module (gnu packages admin)
   #:use-module (gnu packages audio)
+  #:use-module (gnu packages backup)
   #:use-module (gnu packages bash)
   #:use-module (gnu packages compression)
   #:use-module (gnu packages containers)
@@ -325,6 +326,7 @@ package is built with Qt 6 and almost all optional features enabled.")
      (modify-inputs (package-inputs 86box)
        (delete "sdl2")
        (append libaaruformat
+               libarchive
                sdl3
                `(,zstd "lib"))))
     (supported-systems '("x86_64-linux" "aarch64-linux" "loongarch64-linux"))))
