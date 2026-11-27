@@ -15,17 +15,17 @@
 (define-public libaaruformat
   (package
     (name "libaaruformat")
-    (version "1.0.0-beta.2")
+    (version "1.0.0-beta.3.2")
     (source
      (origin
        (method git-fetch)
        (uri (git-reference
               (url "https://github.com/aaru-dps/libaaruformat")
-              (commit "06a22a171d97bd45698145645bb66612e130f340") ;; Interim commit while the release tag references a non-existent submodule
+              (commit (string-append "v" version))
               (recursive? #t)))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "020xyxr9lb03sdd1f0c9913zgjv72m4pz6dpbv8bszsmhm591rbb"))))
+        (base32 "1wa1889skj7wywj324xpb12c8mx099hmh4x4z30g1p6zxk61xz04"))))
     (build-system cmake-build-system)
     (arguments
      (list
